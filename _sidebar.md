@@ -1,8 +1,8 @@
 <!-- docs/_sidebar.md --> 
 - 目录
-  - [**一、数据库API**](数据库API/DatabaseAPI.md)
-  - [**二、数据获取API**](数据获取API/Data_capturingAPI.md)
-  - [**三、因子研究**](因子研究/Factors_research.md)
-  - [**四、策略回测**](策略回测/Strategy_backtest.md)
-  - [**五、工具库**](工具库/Tools_lib.md)
-
+  - [**系统简介**](1_系统说明/system.md)
+  - [**使用流程**](2_使用流程/flow.md)
+  - [**Matrix**](3_接口说明/Matrix/matrix.md)
+  - [**Strategy**](3_接口说明/策略/strategy.md)
+  - [**Evaluator**](3_接口说明/评价/evaluator.md)
+  - [**数据库**](3_接口说明/数据库/database.md)
