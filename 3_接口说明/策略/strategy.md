@@ -38,9 +38,8 @@ BaseStrategy是SignalStrategy和SimulationStrategy的基类，为因子计算和
           self.subscribe(FactorA())
   ```
 
-  
 
-- **subscribe_data**
+- **subscribe_data**  <a id="subscribe_data"></a> 
 
   - 函数作用：订阅数据。
 
