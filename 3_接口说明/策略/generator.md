@@ -10,7 +10,7 @@ Generator之间允许存在订阅关系，这些订阅关系构成了回测过�
 
 ___
 
-#### **\__init__**
+#### \__init__
 
 <b> 子类的参数注册接口 </b>
 
@@ -39,7 +39,7 @@ ___
 
 <b> 初始化接口 </b>
 
-主要功能: [订阅数据]()、[订阅因子]()、[添加定时器]()、[添加自定义回调]()、[注册信息流]()
+主要功能: [订阅数据](#subscribe_data)、[订阅因子](#subscribe)、[添加定时器](#add_scheduler)、[注册信息流、发布信息、构建自定义回调。](#generator-间的信息传递)
 
 子类必须实现该方法
 ```python
@@ -58,7 +58,7 @@ ___
 
 <b> 数据订阅接口 </b>
 
-参数:
+<b> 参数 </b>:
 
 - name (str): 属性名称
 - dataset_describe (list): 数据信息，元素依次为：
@@ -75,7 +75,6 @@ ___
     - 若为其他数据，则不提供该字段 (describe 长度为 5)
 
 ```python
-
 class MyGenerator(Generator):
 
     def init(self):
@@ -94,12 +93,100 @@ class MyGenerator(Generator):
         volume = self.pv.get('000001.SZ','volume')
         print(self.time, f'当前 000001.SZ 的 volume 为 {volume}')
 ```
+---
+
+#### subscribe
+
+<b> 订阅另一个 Generator。</b>
+
+若系统中已存在，则返回系统中的实例（保证唯一性），
+若不存在，则将传入的实例加入系统。
+
+<b> 参数 </b>: other (Generator): Generator实例
 
 
+<b> 返回值 </b>: registed_generator (Generator): 注册后的 Generator 实例
+
+```python
+class MyGeneratorA(Generator):
+
+    def init(self):
+        b = MyGeneratorB()
+        self.b = self.subscribe(b)
+```
+---
+
+#### add_scheduler
+
+<b> 添加定时器 </b>
+
+<b> 参数 </b>：
+- scheduler (BaseScheduler, optional): [定时器实例](). Defaults to None.
+- milestones (List[str], optional): 时间列表（[定时任务]()）. Defaults to None.
+- freq (timedelta, optional): 回调频率（[定频任务]()）. Defaults to None.
+- with_data (str, optional): 数据订阅对应的属性名(按某一[订阅数据]()触发回调). Defaults to None.
+- handler (Callable): 回调函数。
+
+注意：scheduler，milestones，freq，with_data 有且只有一个有效。
+
+<b> 返回值 </b>：registed_scheduler (scheduler) 注册后的 scheduler 实例。
 
 
+```python
+class MyGenerator(Generator):
 
+    def init(self):
+        self.add_scheduler(
+            milestons = ['10:00:00','14:00:00'],
+            handler = my_callback
+        )
+    
+    def my_callback(self):
+        print(self.time)
+```
+---
+#### Generator 间的信息传递
 
+<b> add_message </b> 
 
+- 功能：注册信息流，通过 public 接口对外发布，订阅者可通 callback 接口建基于该信息流的回调。
+- 参数：name (str): 信息名称。
+
+<b> public </b>
+
+- 功能: 对外发布信息 
+- 参数: 
+  - msg_name (str, optional): 信息名称 
+  - data: 信息数据
+
+<b> callback </b>
+
+- 功能: 构建基于某一消息流的回调
+- 参数: 
+  - trigger: 消息流
+  - handler: 回调函数
+
+<b> </b>
+
+```python
+class MyGeneratorA(Generator):
+
+    def init(self):
+        self.add_message('vol_update')
+
+    def some_callback(self):
+        self.public('vol_update', self.volatility)
+
+    
+class MyGeneratorB(Generator):
+
+    def init(self):
+        a = self.subscribe(MyGeneratorA())
+        self.callback(a['vol_update'], self.my_callback)
+
+    def my_callback(self, msg):
+        print(f'接收到来自 a 的波动率信息: vol = {msg}')
+```
+---
 
 

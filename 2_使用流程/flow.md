@@ -34,7 +34,7 @@
 
 <b> 1. 数据订阅 </b>
 
-在 init 函数中调用 [subscribe_data](3_接口说明/策略/strategy.md#subscribe_data) 订阅数据 
+在 init 函数中调用 [subscribe_data](3_接口说明/策略/generator.md#subscribe_data) 订阅数据 
 
 ```python
 class MyStrategyA(Strategy):
@@ -52,9 +52,9 @@ class MyStrategyA(Strategy):
 
 在 init 函数中:
 
-1.调用 subscribe [link] 订阅其他策略（因子）
+1.调用 [subscribe](3_接口说明/策略/generator.md#subscribe) 订阅其他策略（因子）
 
-2.调用 callback [link] 函数配置自定义回调函数
+2.调用 [callback](3_接口说明/策略/generator.md#generator-间的信息传递) 函数配置自定义回调函数
 
 ```python
 class MyStrategyA(Strategy):
@@ -74,7 +74,7 @@ class MyStrategyA(Strategy):
 
 <b> 3. 添加定时器 </b>
 
-在 init 函数中调用 add_scheduler [link] 添加定时器
+在 init 函数中调用 [add_scheduler](3_接口说明/策略/generator.md#add_scheduler) 添加定时器
 
 ```python
 class MyStrategyA(Strategy):
