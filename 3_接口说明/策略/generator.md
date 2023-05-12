@@ -1,6 +1,12 @@
 ### Generator
 
-Generator 是 TransMatrix 系统的主要开发接口。它是 Strategy 的基类，同时它也可以被用户直接继承，用来实现因子计算逻辑。 Generator之间允许存在订阅关系，这些订阅关系构成了回测过程中的计算图。在一次回测中，Matrix引擎将以 Strategy 为入口自动获取计算图。
+Generator 是 TransMatrix 系统的主要开发接口。
+
+它是 Strategy 的基类，同时也可被用户直接继承，用来实现因子计算逻辑。 
+
+Generator之间允许存在订阅关系，这些订阅关系构成了回测过程中的计算图。
+
+在一次回测中，Matrix引擎将以 Strategy 为入口自动获取计算图。
 
 ___
 
@@ -8,8 +14,8 @@ ___
 
 <b> 子类的参数注册接口 </b>
 
-TransMatrix 系统根据类名和参数确定 Generator 子类实例的 key，
-系统保证 key 的全局唯一性。 即若一个 Generator 实例在[注册]()时系统中已存在与之相等（key相同）的对象，则该实例的订阅者将获得系统中已注册的实例。以下述 main.py 中的 MyGenerator 为例：
+TransMatrix 系统根据类名和参数确定 Generator 子类实例的key，
+系统通过key来保证Generator对象的全局唯一性。 若一个Generator实例在[注册]()时系统中已存在与之相等（key相同）的对象，则该实例的订阅者将获得系统中已注册的实例（而非订阅者构造的实例本身）。
 
 ```python
 # in main.py:
