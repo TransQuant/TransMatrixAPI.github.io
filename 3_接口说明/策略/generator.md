@@ -1,4 +1,4 @@
-### Generator
+## Generator
 
 Generator 是 TransMatrix 系统的主要开发接口。
 
