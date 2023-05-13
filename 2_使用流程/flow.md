@@ -92,14 +92,12 @@ class MyStrategyA(Strategy):
 ```
 <b> 4. 编写交易逻辑 </b>
 
+在 [系统回调函数 或 自定义回调函数](3_接口说明/策略/3_接口说明/策略/strategy.md#系统回调函数) 中编写交易逻辑
+
 ```python
 class MyStrategy(Strategy):
 
-	# 在 系统 或 自定义 的回调函数中编写交易逻辑
-
-	# [link 系统回调]
-	# [link 自定义回调]
-	def `callback`(self):
+	def `callback`(self): 
 
 		orders = self.pending_orders # 获取挂单信息 [link pending_orders]
 		position = self.position # 获取持仓信息 [link position]
@@ -112,7 +110,6 @@ class MyStrategy(Strategy):
 
 		# 撤单指令
 		self.cancel_order(`order`) # [link order] 
-
 ```
 
 ### 构建评价器: Evaluator
