@@ -6,4 +6,5 @@
   - [**Generator**](3_接口说明/策略/generator.md)
   - [**Strategy**](3_接口说明/策略/strategy.md)
   - [**Evaluator**](3_接口说明/评价/evaluator.md)
+  - [**DataApi**](3_接口说明/数据模型/set_model_view.md)
   - [**数据库**](3_接口说明/数据库/database.md)

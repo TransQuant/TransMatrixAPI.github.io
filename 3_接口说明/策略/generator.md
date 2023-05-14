@@ -83,7 +83,7 @@ ___
     - 若为财报数据，则传入'3Q','1Y' ... 等，系统将按报告期生成滞后字段
         
   - category: 
-    - 若财报数据，则填入'finance-report' (describe 长度为 6)
+    - 若为A股财报数据，则填入'finance-report' (describe 长度为 6)
     - 若为其他数据，则不提供该字段 (describe 长度为 5)
 
 ```python

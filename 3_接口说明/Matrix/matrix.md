@@ -13,6 +13,12 @@
 config = {
     'span': ['2021-01-01','2021-01-31'],
     'codes': ['000001.SZ','000002.SZ'],
+    'market': {
+        'stock':{
+            'data': ['common','stock_bar_daily'],
+            'matcher': 'daily',
+        },
+    },
 }
 
 matrix = Matrix(cfg)
