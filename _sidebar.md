@@ -7,5 +7,6 @@
   - [**Strategy**](3_接口说明/策略/strategy.md)
   - [**Evaluator**](3_接口说明/评价/evaluator.md)
   - [**DataApi**](3_接口说明/数据模型/set_model_view.md)
+  - [**订单与撮合**](4_其他组件/market_components.md)
+  - [**定制化模块: 截面因子开发**](5_定制化模块_截面因子开发/signal.md)
   - [**数据库**](3_接口说明/数据库/database.md)
-  - [**market**](4_其他组件/market_components.md)
