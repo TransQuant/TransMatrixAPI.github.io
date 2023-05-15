@@ -27,7 +27,7 @@ ___
 <b> 子类的参数注册接口 </b>
 
 TransMatrix 系统根据类名和参数确定 Generator 子类实例的key，
-系统通过key来保证Generator对象的全局唯一性。 若一个Generator实例在[注册]()时系统中已存在与之相等（key相同）的对象，则该实例的订阅者将获得系统中已注册的实例（而非订阅者构造的实例本身）。
+系统通过key来保证Generator对象的全局唯一性。 若一个Generator实例在[注册](#subscribe)时系统中已存在与之相等（key相同）的对象，则该实例的订阅者将获得系统中已注册的实例（而非订阅者构造的实例本身）。
 
 ```python
 # in main.py:
@@ -39,11 +39,21 @@ class MyGenerator(Generator):
 a = MyGenerator(3, 2)
 b = MyGenerator(w = 3, b = 2)
 c = MyGenerator(3, b = 2)
-
 assert a == b == c
 assert a.key == b.key == c.key == '__main__.MyGenerator(3,2)'
 assert a.w == b.w == c.w == 3
 assert a.b == b.b == c.b == 2
+
+args = [3,4]
+kwargs = {'w':3, 'b':4}
+
+d = MyGenerator(*args)
+e = MyGenerator(**kargs)
+
+assert d == e
+assert d.w == e.w == 3 and d.b == e.b == 4
+
+
 ```
 
 ___

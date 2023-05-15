@@ -140,5 +140,4 @@ class BarMatcher(BaseMatcher):
         order.status = ORDER_STATUS.CANCELED # 状态改为撤单
         return MatchResult(order = order, event = MATCH_EVENT.CANCEL) # 返回事件：全部撤单
 ```
-
 ---

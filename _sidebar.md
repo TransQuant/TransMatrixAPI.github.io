@@ -9,5 +9,6 @@
   - [**DataApi**](3_接口说明/数据模型/set_model_view.md)
   - [**订单与撮合**](4_其他组件/market_components.md)
   - [**定制化模块: 截面因子开发**](5_定制化模块_截面因子开发/signal.md)
-  - [**配置文件与快速部署**](6_参数配置/configer.md)
+  - [**配置文件与灵活部署**](6_参数配置/configer.md)
   - [**数据库**](3_接口说明/数据库/DatabaseAPI.md)
+  

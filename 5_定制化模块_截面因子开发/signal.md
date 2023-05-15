@@ -17,6 +17,15 @@ Signal模式与[普通交易模式](3_接口说明/Matrix/matrix.md)的使用流
 
 #### 配置回测信息
 
+必须参数:
+- span : List[Union[str, datetime]], # 回测时间段
+- codes : Union[List, str], # 回测标的
+
+可选参数:
+- universe (list): 配置动态票池.
+- context  (list or dict): 自定义参数, Strategy 和 Evaluator 注册后可通过 .matrix_context 获取。
+
+
 ```python
 # SignalMatrix 无需配置 market, fee_rate, ini_cash 等交易相关字段。
 config = {

@@ -8,6 +8,31 @@ Evaluator: 策略评价组件, 用户通过继承该组件实现评价逻辑。
 
 若要将因子注册到TransQuant 策略面板，则需要复写 regist 方法。
 
+#### \__init__
+
+<b> 子类的参数注册接口 </b>
+
+```python
+class MyEvaluator(Evaluator):
+
+    def __init__(self, w, b):
+        super().__init__(w, b)
+
+a = MyGenerator(3, 2)
+b = MyGenerator(w = 3, b = 2)
+assert a.w == b.w == 3
+assert a.b == b.b == 2
+
+args = [3,4]
+kwargs = {'w':3, 'b':4}
+
+d = MyGenerator(*args)
+e = MyGenerator(**kargs)
+
+assert d.w == e.w == 3 and d.b == e.b == 4
+```
+
+
 #### init
 
 init方法主要用于订阅评价要用到的数据，如基准收益率、股票行业信息等。
