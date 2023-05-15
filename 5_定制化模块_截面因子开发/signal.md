@@ -151,7 +151,73 @@ SignalStrategy 也是 [Generator](3_接口说明/策略/generator.md) 的子类�
   - table_name (str): 表名
   - name (str): 信号名称
 
+---
+
 #### 系统回调函数
 
+<b> on_clock </b>
 
+基于 clock 时点的回调函数， 用于编写因子和信号计算逻辑
+
+<b> pre_transform </b>
+
+对订阅数据进行向量化计算 
+
+`注意:`
+- 向量化预计算仅适用于回测，用于快速验证交易逻辑。
+- TransMatrix实盘交易系统中不存在与pre_transform对应的接口。
+
+<b> post_transform </b>
+
+对生成的因子或信号数据向量化计算
+
+
+#### 代码示例
+
+```python
+from transmatrix import SignalStrategy
+from transmatrix.data_api import DataView3d
+import numpy as np
+
+class MacdSignal(SignalStrategy):
+    def init(self):
+        self.add_clock(milestones='09:35:00') # 9:35:00 触发
+        self.subscribe_data( 
+            'pv', ['*','stock_bar_daily',self.codes,'close', 30] # 订阅 close 数据
+        )
+        self.create_factor_table(['dif', 'dea']) # 创建 dif 和 dea 两个因子
+        self.pv: DataView3d # pv 为 3d 数据视图         
+    
+    def on_clock(self):
+        
+        sma26 = np.nanmean(self.pv.get_window('close', 26), axis = 0) # 计算 26 日均线
+        sma12 = np.nanmean(self.pv.get_window('close', 12), axis = 0) # 计算 12 日均线
+        
+        dif = sma12 - sma26 # 计算 dif
+        self.update_factor('dif', dif) # 更新 dif 因子
+        
+        dea = np.nanmean(self.factor_data.get_window('dif', 9), axis = 0) # 计算 dea
+        self.update_factor('dea', dea) # 更新 dea 因子
+        
+        self.update_signal(2*(dif - dea)) # 更新信号(macd)
+```
+---
+
+### SignalEvaluator
+
+SignalEvaluator 与 [基础评价器](3_接口说明/评价/evaluator.md)使用流程一致。
+
+用户可在 init 函数中订阅评价器需要的数据，
+
+并通过实现 critic，show 方法实现评价结果计算和可视化。
+
+若要将因子注册到TransQuant 策略面板，则需要复写 regist 方法。
+
+#### 数据对齐
+
+数据对齐是Signal模式的核心特性。
+
+在评价开始前，评价器订阅的所有数据都将按照如下规则 与 clock 时间戳对齐:
+
+- 
 
