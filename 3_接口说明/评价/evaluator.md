@@ -18,16 +18,16 @@ class MyEvaluator(Evaluator):
     def __init__(self, w, b):
         super().__init__(w, b)
 
-a = MyGenerator(3, 2)
-b = MyGenerator(w = 3, b = 2)
+a = MyEvaluator(3, 2)
+b = MyEvaluator(w = 3, b = 2)
 assert a.w == b.w == 3
 assert a.b == b.b == 2
 
 args = [3,4]
 kwargs = {'w':3, 'b':4}
 
-d = MyGenerator(*args)
-e = MyGenerator(**kargs)
+d = MyEvaluator(*args)
+e = MyEvaluator(**kargs)
 
 assert d.w == e.w == 3 and d.b == e.b == 4
 ```
@@ -80,7 +80,7 @@ class MyEvaluator(Evaluator)
 
 ```python
 
-class MyEvaluator(Evalutro)
+class MyEvaluator(Evaluator)
 
     def regist(self):
         self.kpis = {'年化收益': self.yearly_ret}
