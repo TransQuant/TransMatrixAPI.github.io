@@ -52,16 +52,27 @@ TransMatrix 中的一个研究工程类似于一个代码工程目录。
     - kwargs
       - ... 字典参数
 
+--- 
+
 #### 引用其他配置文件
 
 通过 include 字段引用其他 yaml 文件
 
-逻辑如下:
+更新规则:
+
+逐级扫描被引用文件的 key 和 value，
+- 如果主文件相应层级下不存在相同的key，则 value 会被并入配置。
+- 如果主文件相应层级下存在相同的key，则 value 不会被并入配置（以主文件为准）。
+
+
+代码示例：
+
+---
+合并 main.yaml 和 sub.yaml 的内容
 
 main.yaml:
 ```
 matrix:
-  - span [2021-01-01, 2021-12-31]
   - code [000001.SZ, 000002.SZ]
 
 strategy:
@@ -78,6 +89,25 @@ sub.yaml
 matrix: 
   - span: [2020-01-01, 2021-12-31]
 strategy: 
-  - strategy 1:
-    - args : 10
+  - strategy1:
+     - args: 10
+```
+
+---
+
+
+以上配置等价于 ：
+```
+matrix:
+  - span [2020-01-01, 2021-12-31]  # sub.yaml 中的 matrix:span 被并入
+  - code [000001.SZ, 000002.SZ]    # main.yaml 里 存在 matrix:code 字段，以 main.py 为准。
+  
+strategy:
+  - strategy1:
+     - class
+       - strategy.py
+       - test_strategy
+     - args: 10                    # sub.yaml 中的 strategy:strategy1:args 被并入
+```
+
 ---
