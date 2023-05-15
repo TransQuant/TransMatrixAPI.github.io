@@ -76,8 +76,8 @@ include: sub.yaml
 sub.yaml
 ```
 matrix: 
-   - span: [2020-01-01, 2021-12-31]
+  - span: [2020-01-01, 2021-12-31]
 strategy: 
-  - 
-
+  - strategy 1:
+    - args : 10
 ---
