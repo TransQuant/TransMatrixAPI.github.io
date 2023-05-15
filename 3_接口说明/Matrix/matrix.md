@@ -17,10 +17,13 @@ config = {
         'stock':{
             'data': ['common','stock_bar_daily'],
             'matcher': 'daily',
+            'account': 'detail',
         },
+    'fee_rate': 0,
+    'ini_cash': 1000000
     },
 }
-
+from transmatrix import Matrix
 matrix = Matrix(cfg)
 ```
 

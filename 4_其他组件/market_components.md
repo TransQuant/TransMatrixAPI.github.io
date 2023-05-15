@@ -1,5 +1,5 @@
 
-<b> 订单(Order) </b> 与 <b> 撮合算法（Matcher）</b> 是 TransMatrix 系统的核心概念。
+<b> 订单(Order) </b> 与 <b> 撮合算法（Matcher）共同构成了 TransMatrix 系统中策略与市场间的信息交互机制</b> 
 
 系统默认支持 日频 / k线 / 快照 与 Orderflow 撮合成交。
 
@@ -96,6 +96,7 @@ class MATCH_EVENT(Enum):
 ```
 
 以下示例代码实现了一个简单的 K 线撮合器：
+
 ```python
 class BarMatcher(BaseMatcher):
 
@@ -122,7 +123,7 @@ class BarMatcher(BaseMatcher):
                 return MatchResult(order = order, event = MATCH_EVENT.ALL_TRADE, price = close, volume = order.volume) # 返回成交事件:全部成交
 
         order.status = ORDER_STATUS.PENDING  # 若未成交，则调整为挂单      
-        return MatchResult(order = order, event = MATCH_EVENT.INSERT2PEND, volume = 0)
+        return MatchResult(order = order, event = MATCH_EVENT.INSERT2PEND, volume = 0) # 返回事件：委托->挂单
 
     def match_pending(self, order:Order) -> MatchResult:  
         high = self.data.get('high', order.code) # 当前bar的最高价
@@ -138,7 +139,6 @@ class BarMatcher(BaseMatcher):
     def match_cancelling(self, order:Order) -> MatchResult: 
         order.status = ORDER_STATUS.CANCELED # 状态改为撤单
         return MatchResult(order = order, event = MATCH_EVENT.CANCEL) # 返回事件：全部撤单
-
 ```
 
 ---
