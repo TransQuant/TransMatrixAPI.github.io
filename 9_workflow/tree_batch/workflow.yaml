@@ -1,0 +1,31 @@
+
+# workflow 用于描述业务类型，目前支持 BatchMatrix (批量计算)， 后续支持OptimMatrix（参数寻优）
+workflow: BatchMatrix
+
+matrix:
+    span: [2021-01-01,2021-12-31]
+    # logging: True
+    show_report: True
+
+# task 最大穿透目录层数 (defalult 为 1)
+max_child_level: 1
+
+# 任务流配置
+# task为两级列表
+# 第一级为batch，即每个元素代表一个批量任务，batch之间按照列表中前后顺序执行
+# 每个 batch 内包含多个字任务（每个任务指向一个config.yaml) , batch内的任务将并行执行。
+
+task:
+    # batch 配置模式一: 
+    # 以'regex '开头。利用正则表达式筛选符合条件的因子文件夹。
+    # 具体而言，从当前入口文件所在目录递归地扫描子文件夹(os.walk)
+    # 若某一级文件夹名称调用 re.compile('factor_[A|B]').search()返回True时，该文件夹下的config.yaml（若有）将被加入任务列表
+
+    # batch 配置模式二:
+    # 将各任务（因子文件夹相对于当前入口文件）的路径作为列表传入。
+    - regex factor_[A|B]
+    - 
+        - factor_C
+        - factor_D
+
+

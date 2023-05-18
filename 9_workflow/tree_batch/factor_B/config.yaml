@@ -1,0 +1,34 @@
+matrix:
+
+    mode: signal
+    span: [2019-01-01, 2021-12-31]
+    codes: &universe ../custom_universe.pkl
+    check_codes: False
+
+    context:
+        long  : 25
+        short : 12
+        diff  :  9
+
+    save_signal: False
+    show_report: False
+    # logging: True
+    
+
+strategy:
+
+    SignalA:
+        class: 
+            - strategy.py
+            - ReverseSignal
+
+    # 可配置多个策略
+
+evaluator:
+    SimpleAlphaEval:
+        class:
+            - ../evaluator.py
+            - EvalFull
+
+    
+

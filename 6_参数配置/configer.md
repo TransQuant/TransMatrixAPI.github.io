@@ -51,8 +51,58 @@ TransMatrix 中的一个研究工程类似于一个代码工程目录。
       - ... 列表参数
     - kwargs
       - ... 字典参数
-
+  
 --- 
+
+配置文件示例
+
+```yaml
+# in config.yaml 
+matrix:                                     # 配置回测信息
+
+    mode: simulation                        # 指定模式 [simulation 或 signal]
+    span: [2021-01-01, 2021-12-31]          # 指定起止时间 (日期 或 时间戳)
+    codes: &universe custom_universe.pkl    # 同级目录下的 custom_universe.pkl 作为标的资产池
+    
+    market:                                 # 配置市场信息
+        stock:                              # 市场名称: 国内股票市场 [名称应以 stock 开头]
+            data: [common, stock_bar_daily] # 配置市场数据 [数据库名，数据表名]
+            matcher: daily                  # 配置撮合器 如不提供，则根据表名中是否包含 bar/tick/order/daily 等关键字识别
+            account: detail                 # 账户配置可选 detail / base
+
+
+strategy:                                   # 配置策略信息
+
+    test_strategy:                          # 策略名称
+        class:                              # 策略文件和策略代码
+            - ../strategies/strategy.py     # 通过相对路径指配置策略代码文件 strategy.py
+            - TestStra                      # 策略类
+        args: [3,5]                         # 配置参数
+
+
+evaluator:                                  # 配置评价器信息 (若不提供，则不进行策略评价)
+    test_eval:                              # 评价器名称
+        class:
+            - ../evaluators/evaluator.py    # 通过相对路径配置评价器码文件 strategy.py
+            - TestEval                      # 评价器类
+        kwargs:                             # 配置参数
+            benchmark: '000300.SH'
+```
+
+
+#### 执行回测
+
+系统支持 命令行 和 函数两种方式执行配置文件
+ 
+命令行: Matrix -p [yaml_path]
+
+函数执行:
+```python
+from transmatrix.workflow import run_matrix
+matrix = run_matrix(yaml_path)
+``` 
+  
+  
 
 #### 引用其他配置文件
 
@@ -65,9 +115,11 @@ TransMatrix 中的一个研究工程类似于一个代码工程目录。
 - 如果主文件相应层级下存在相同的key，则 value 不会被并入配置（以主文件为准）。
 
 
-代码示例：
+
 
 ---
+代码示例：
+
 合并 main.yaml 和 sub.yaml 的内容
 
 main.yaml:
