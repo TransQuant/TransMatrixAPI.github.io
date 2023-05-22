@@ -4,10 +4,6 @@ Generator 是 TransMatrix 系统的主要开发接口。
 
 它是 [Strategy](3_接口说明/策略/strategy.md) 的基类，同时也可被用户直接继承，用来实现因子计算逻辑。 
 
-Generator 之间允许存在订阅关系，这些订阅关系构成了回测过程中的计算图。
-
-在一次回测中，TransMatrix 引擎将以 Strategy 为入口自动获取计算图。
-
 ---
 #### 属性列表
 

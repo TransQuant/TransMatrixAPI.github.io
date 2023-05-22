@@ -145,17 +145,6 @@ class MyEvaluator(Evaluator):
 		  ...
 ```
 
-```python
-
-class MyEvaluator(Evaluator):
-	def critic(self):
-		self.trades = self.get_trade_table() # 获取交易记录 [link]
-		self.stats = self.get_daily_stats()	# 获取各标的每日统计指标 [link]
-		self.pnl = self.get_pnl() # 获取账户盈亏
-		...
-```
-
-
 
 ### 配置回测引擎：Matrix
 
