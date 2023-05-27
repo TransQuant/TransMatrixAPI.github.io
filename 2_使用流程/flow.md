@@ -157,7 +157,7 @@ config = {
     'codes': ['000001.SZ','000002.SZ'],
 }
 
-matrix = Matrix(cfg)
+matrix = Matrix(config)
 ```
 
 2.添加策略

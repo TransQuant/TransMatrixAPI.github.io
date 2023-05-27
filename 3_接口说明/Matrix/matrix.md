@@ -47,7 +47,7 @@ config = {
     },
 }
 from transmatrix import Matrix
-matrix = Matrix(cfg)
+matrix = Matrix(config)
 ```
 #### 添加策略
 ```python
