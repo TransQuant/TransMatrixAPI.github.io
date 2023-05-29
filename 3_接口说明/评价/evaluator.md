@@ -1,4 +1,4 @@
-## Evaluator
+## [Evaluator](8_测例代码\因子服务-因子分析.md)
 
 Evaluator: 策略评价组件, 用户通过继承该组件实现评价逻辑。
 
@@ -86,7 +86,6 @@ class MyEvaluator(Evaluator)
         self.kpis = {'年化收益': self.yearly_ret}
 
 ```
-
 
 
 
