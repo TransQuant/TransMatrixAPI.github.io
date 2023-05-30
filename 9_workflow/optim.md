@@ -1,6 +1,49 @@
-### 测例说明
+### 参数优化
 
-Transmatrix框架支持参数优化功能，这里对因子提供一个样例。
+Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因子提供一个样例。
+
+#### 待优化参数类型
+
+参数类型可接受Sequence，Box，Discrete，Category和Bool。
+
+- Sequence：数值型的等差数列，输入[low, high, step]，参数的样本空间为np.arange(low, high, step)。比如输入[1,5,1]，得到np.arange(low,high,step)。
+- Box：数值型的连续空间，输入[low, high]，参数的样本空间为一个连续区间[low, high]。比如输入[1,5]，得到连续区间[1,5]。
+- Discrete：数值型的离散空间，比如输入[1,3,4]，参数的样本空间为一个list [1,3,4]。
+- Category：分类变量，比如输入['a','b','c']，参数的样本空间为一个list ['a','b','c']。
+- Bool：布尔值空间，输入[True, False]，参数的样本空间为一个list [True, False]。
+
+#### 优化方法
+
+- 网格搜索 **gridsearch**：支持所有参数类型
+- 随机搜索 **randomsearch**：支持所有参数类型
+  - seed：随机种子
+  - max_iter：最大迭代数目
+- 贝叶斯搜索 **bayessearch**：仅支持数值型参数
+  - seed：随机种子
+  - max_iter：最大迭代数目
+  - n_warmup：初始化高斯过程模型的随机点个数
+  - ac_func：选择下一个采样点的采样策略，可选择EI, PI
+- 强化随机搜索 **ARS**：仅支持Sequence和Box类型的参数
+  - seed：随机种子
+  - max_iter：最大迭代数目
+  - lr：学习率
+  - noise：指定对待优化参数每次探索长度的标准差，形如[待优化参数1的探索长度的标准差, 待优化参数2的探索长度的标准差, ...]的list
+  - num_directions：在每个迭代中探索多少个随机方向 
+  - num_top_directions：在每个迭代中保留多少个最好的随机方向
+
+- 遗传算法 **GA**：支持所有参数类型
+  - seed：随机种子
+  - max_iter：最大迭代数目
+  - population_size：种群大小
+  - tournament_size：每次迭代中选取多少个最优个体不经过交叉、变异，直接复制进入下一代
+  - pc：交叉概率
+  - pm：变异概率
+
+- 早停法 earlystopping
+  - 在训练过程中监控模型的性能，一旦发现模型性能不再提升，就停止训练。
+  - patience：不再提升的容忍次数
+  - delta：提升的最小变化量
+
 
 #### 结合参数优化的因子研究
 
@@ -14,6 +57,7 @@ Transmatrix框架支持参数优化功能，这里对因子提供一个样例。
         policy: gridsearch    # 参数优化方法，可选择gridsearch，randomsearch，bayessearch，GA，ARS
         # 参数优化的相关参数设置
         policy_params: 
+        	# 公共参数
             seed: 81    # 随机种子
             max_iter: 30    # 最大迭代数目
     		
@@ -40,18 +84,13 @@ Transmatrix框架支持参数优化功能，这里对因子提供一个样例。
             delta: 0.0001    # 提升的最小变化量
     
     	# 待优化参数，以[样本空间, 空间类型]的形式配置:
-    	# Sequence: 输入[1,5,1]，参数的样本空间为np.arange(1,5,1);
-    	# Box: 输入[1,5]，参数的样本空间为一个连续区间[1,5];
-    	# Discrete: 输入[1,3,4](list)，参数的样本空间为一个list [1,3,4];
-    	# Category: 输入['a','b','c'](list)，参数的样本空间为一个list ['a','b','c'];
-    	# Bool: 输入[True, False](list)，参数的样本空间为一个list [True, False]。
         params:
             ret:  [[1,5,1], 'Sequence']
             roll: [[5,15,1], 'Sequence']
     ```
-
+    
   - 配置Matrix组件，策略逻辑和评价组件
-
+  
     ```yaml
     matrix:
         mode: signal
@@ -66,7 +105,7 @@ Transmatrix框架支持参数优化功能，这里对因子提供一个样例。
         rank_ic:
             class: [evaluator.py, Eval]
     ```
-
+  
 - <b> 编写strategy.py </b>
 
   - 订阅数据、定时器，实现因子逻辑
