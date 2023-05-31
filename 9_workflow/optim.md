@@ -27,10 +27,11 @@ Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因
   - seed：随机种子
   - max_iter：最大迭代数目
   - lr：学习率
+  - initial_values：参数初值，字典类型。若为空，则随机生成一个点作为初值
   - noise：指定对待优化参数每次探索长度的标准差，形如[待优化参数1的探索长度的标准差, 待优化参数2的探索长度的标准差, ...]的list
   - num_directions：在每个迭代中探索多少个随机方向 
   - num_top_directions：在每个迭代中保留多少个最好的随机方向
-
+  
 - 遗传算法 **GA**：支持所有参数类型
   - seed：随机种子
   - max_iter：最大迭代数目
@@ -54,7 +55,7 @@ Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因
     ```yaml
     OptimMatrix:
         max_workers: 20    # 并行运算的worker数量
-        policy: gridsearch    # 参数优化方法，可选择gridsearch，randomsearch，bayessearch，GA，ARS
+        policy: gridsearch    # 参数优化方法，可选择gridsearch, randomsearch, bayessearch, GA, ARS
         # 参数优化的相关参数设置
         policy_params: 
         	# 公共参数
