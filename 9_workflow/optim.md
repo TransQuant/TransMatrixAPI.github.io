@@ -189,7 +189,7 @@ Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因
   ```
 
   <div align=center>
-  <img width="200" src="pics\参数优化.png"/>
+  <img width="200" src="9_workflow\pics\参数优化.png"/>
   </div>
   <div align=center style="font-size:12px">优化结果</div>
 
