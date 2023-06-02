@@ -1,4 +1,4 @@
-## Signal 模式
+## [Signal 模式](8_测例代码\策略服务-回测场景支持\因子选股)
 
 基于 TransMatrix 基础组件（Matrix, Generator, DataApi，Scheduler等）开发的一套截面因子研究框架。
 
@@ -100,7 +100,7 @@ SignalStrategy 也是 [Generator](3_接口说明/策略/generator.md) 的子类�
 
 <b> 参数 </b>: factor_names (List[str] 或 str) 因子名称（列表）
 
---- 
+---
 
 #### update_factor
 

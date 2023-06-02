@@ -1,4 +1,4 @@
-### 数据管理
+### [数据管理](8_测例代码\transmatrix特色功能\数据获取-data_api\量价数据)
 TransMatrix-python 框架使用 numpy 作为默认的数据后端。
 
 在回测引擎中，数据管理分为[数据订阅]()和数据回放两个阶段:
@@ -85,7 +85,7 @@ TransMatrix-python 框架使用 numpy 作为默认的数据后端。
 - 返回值: dataframes: dict
   - key: 字段名
   - value: dataframe 数据 (列为标的代码)
---- 
+---
 
 #### FinanceReportData
 
@@ -117,7 +117,7 @@ TransMatrix-python 框架使用 numpy 作为默认的数据后端。
   - <b>返回值</b>: 
     - np.array (shape = (len(codes), )): 返回指定字段的数据 
 
----  
+---
 
 <b> get_dict </b>
   - <b>功能</b>: 获取指定字段的最新一条数据, 返回字典
@@ -158,7 +158,7 @@ TransMatrix-python 框架使用 numpy 作为默认的数据后端。
   - <b>返回值</b>: 
     - np.array (shape = (length, len(codes))): 指定字段的数据
 
---- 
+---
 
 <b> get_window_df </b>
   - <b>功能</b>:获取指定字段的最新 N 条数据, 返回 DataFrame
@@ -206,4 +206,4 @@ TransMatrix-python 框架使用 numpy 作为默认的数据后端。
       - key: 字段名
       - value: pd.dataframe, index 为时间, columns 为标的代码
 
---- 
+---
