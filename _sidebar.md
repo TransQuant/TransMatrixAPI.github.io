@@ -15,6 +15,7 @@
   - [**参数优化**](9_workflow/optim.md)
   - [**代码样例**](8_测例代码/index.md)
   - [**数据库**](3_接口说明/数据库/DatabaseAPI.md)
+  - [**更新日志**](11_更新日志/relaerse_note.md)
   
   
   
