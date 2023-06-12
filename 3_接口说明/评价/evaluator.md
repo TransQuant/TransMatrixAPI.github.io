@@ -73,6 +73,8 @@ class MyEvaluator(Evaluator)
         self.acc_pnl.plot()
 ```
 
+关于可视化模块的使用，详见[**可视化**](7_可视化模块/plot.md)。
+
 #### regist
 
 将回测结果注册到 TransQuant 平台策略面板。
