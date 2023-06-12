@@ -5,8 +5,8 @@
   - 可绘制图形样式：
     - 折线图、柱状图、柱线图、点线图、直方图、热力图、箱线图、表格和矩形树图；
     - 其中表格和矩形树图仅支持在前端显示。
+  - 在Evaluator中使用时，可在config.yaml文件中matrix部分配置字段`backend: ipython`或`tqclient`指定可视化显示在jupyter notebook还是前端。
 
-  - 在Evaluator中使用时，可在config.yaml文件配置字段`backend: ipython`或`tqclient`指定作图显示在jupyter notebook还是前端。
 
 #### 配置说明
 
@@ -55,7 +55,7 @@
           self.plot(perf['industryIC'].reset_index().rename(columns={'index':'industry'}), kind='table', title='行业IC和IR')
   ```
   
-  > 以下示例均使用结合Evaluator的情况说明
+  > 以下示例均结合框架中Evaluator模块说明
 
   
 
@@ -77,8 +77,12 @@ self.plot(
     ylabel='yaxis'
 )
 ```
+<div align=center>
+<img width="1000" src="7_可视化模块\pngs\1.png"/>
+</div>
+<div align=center style="font-size:12px">折线图</div>
 
-![1](7_可视化模块\pngs\1.png)
+<br />
 
 ```python
 # 有阴影
@@ -93,7 +97,10 @@ self.plot(
 )
 ```
 
-![2](7_可视化模块\pngs\2.png)
+<div align=center>
+<img width="1000" src="7_可视化模块\pngs\2.png"/>
+</div>
+<div align=center style="font-size:12px">带阴影的折线图</div>
 
 #### 柱状图
 
@@ -110,7 +117,10 @@ self.plot(
 )
 ```
 
-![3](7_可视化模块\pngs\3.png)
+<div align=center>
+<img width="1000" src="7_可视化模块\pngs\3.png"/>
+</div>
+<div align=center style="font-size:12px">柱状图</div>
 
 #### 复合折线图
 
@@ -132,7 +142,10 @@ self.plot(
   )
   ```
 
-![4](7_可视化模块\pngs\4.png)
+<div align=center>
+<img width="1000" src="7_可视化模块\pngs\4.png"/>
+</div>
+<div align=center style="font-size:12px">带有第二y轴的折线图</div>
 
 - 柱线图
 
@@ -152,7 +165,10 @@ self.plot(
   )
   ```
 
-![5](7_可视化模块\pngs\5.png)
+<div align=center>
+<img width="1000" src="7_可视化模块\pngs\5.png"/>
+</div>
+<div align=center style="font-size:12px">柱线图</div>
 
 - 点线图（打点图）
 
@@ -171,13 +187,16 @@ self.plot(
       )
       ```
 
-  ![6](7_可视化模块\pngs\6.png)
-
+  <div align=center>
+  <img width="1000" src="7_可视化模块\pngs\6.png"/>
+  </div>
+  <div align=center style="font-size:12px">点线图</div>
+  
   - `当backend = 'tqclient'`时，显示打点图，即用红点和绿点标记买卖行为。
 
     - trademarker：指定数据中被打点标记的列的下标。
     - trademarker_dir：指定数据中指定打点标记方向的列的下标，该列的值只能是1或者-1。
-
+  
     ```python
     # 打点图
     tradedata = pd.DataFrame([[1,2,3],[-1,3,4],[1,4,5]], columns=['direction', 'price', 'volume'])
@@ -209,7 +228,10 @@ self.plot(
 )
 ```
 
-![7](7_可视化模块\pngs\7.png)
+<div align=center>
+<img width="1000" src="7_可视化模块\pngs\7.png"/>
+</div>
+<div align=center style="font-size:12px">直方图</div>
 
 #### 热力图
 
@@ -218,7 +240,7 @@ self.plot(
 ```python
 heatmapdata = pd.DataFrame(np.random.rand(3, 3), 
                         columns=['A', 'B', 'C'], 
-                        index=['X', 'Y', 'Z'])  # 对应横轴的值为columns，纵轴的值为index
+                        index=['X', 'Y', 'Z'])  # 横轴的值对应为columns，纵轴的值对应为index
 
 self.plot(
     heatmapdata,
@@ -229,7 +251,10 @@ self.plot(
 )
 ```
 
-![8](7_可视化模块\pngs\8.png)
+<div align=center>
+<img width="1000" src="8_可视化模块\pngs\8.png"/>
+</div>
+<div align=center style="font-size:12px">热力图</div>
 
 #### 箱线图
 
@@ -246,7 +271,10 @@ self.plot(
 )
 ```
 
-![9](7_可视化模块\pngs\9.png)
+<div align=center>
+<img width="1000" src="8_可视化模块\pngs\9.png"/>
+</div>
+<div align=center style="font-size:12px">箱线图</div>
 
 #### 表格（仅支持前端）
 

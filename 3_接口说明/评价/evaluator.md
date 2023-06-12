@@ -78,7 +78,9 @@ class MyEvaluator(Evaluator)
 #### regist
 
 将回测结果注册到 TransQuant 平台策略面板。
-在 self.kpis 中写入相应指标。具体说明详见 TransQuant 产品使用说明
+在 self.kpis 中写入相应指标。具体说明详见 TransQuant 产品使用说明。
+
+> 注意：Matrix配置信息中 backend 为 tqclient 时，Evaluator.regist() 注册的kpi指标才会显示在前端，否则需要通过 .kpis 属性获得。
 
 ```python
 
