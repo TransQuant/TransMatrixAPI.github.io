@@ -44,7 +44,8 @@ config = {
             'account': 'detail',
         },
     'fee_rate': 0,
-    'ini_cash': 1000000
+    'ini_cash': 1000000,
+    'backend': 'ipython'
     },
 }
 from transmatrix import Matrix
