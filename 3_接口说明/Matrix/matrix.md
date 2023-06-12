@@ -27,7 +27,8 @@
   - ini_cash (float): defaults to 10000000.
   - universe (list): 配置动态票池.
   - context  (list or dict): 自定义参数, Strategy 和 Evaluator 注册后可通过 .matrix_context 获取。
-
+  - backend (str): 控制评价展示的输出方式（包括可视化和回测kpi指标），'ipython' 指在notebook显示，'tqclient' 指在客户端显示。
+  
 - 代码示例
 
 ```python
@@ -76,5 +77,4 @@ matrix.init() # 初始化回测引擎
 matrix.run()  # 运行回测
 matrix.eval() # 运行评价
 ```
-
 

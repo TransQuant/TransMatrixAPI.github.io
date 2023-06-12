@@ -14,7 +14,7 @@ Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因
 
 #### 优化方法
 
-- 网格搜索 **gridsearch**：支持所有参数类型
+- 网格搜索 **gridsearch**：支持除Box外的所有参数类型
 - 随机搜索 **randomsearch**：支持所有参数类型
   - seed：随机种子
   - max_iter：最大迭代数目
