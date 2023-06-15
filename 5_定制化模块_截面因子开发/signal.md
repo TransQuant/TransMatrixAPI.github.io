@@ -24,6 +24,7 @@ Signal模式与[普通交易模式](3_接口说明/Matrix/matrix.md)的使用流
 可选参数:
 - universe (list): 配置动态票池.
 - context  (list or dict): 自定义参数, Strategy 和 Evaluator 注册后可通过 .matrix_context 获取。
+- backend (str): 控制评价展示的输出方式（包括可视化和回测kpi指标），'ipython' 指在notebook显示，'tqclient' 指在客户端显示。
 
 
 ```python
