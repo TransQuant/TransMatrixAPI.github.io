@@ -86,11 +86,63 @@ TransMatrix-python 框架使用 numpy 作为默认的数据后端。
   - key: 字段名
   - value: dataframe 数据 (列为标的代码)
 ---
+---
 
 #### FinanceReportData
+财务数据模型基类，用于存放财务数据
 
-待补充
+---
+---
 
+#### FinanceReportPanelData
+- 财务面板数据，*通过Dataset构造*
+- 底层为 multi-index dataframe
+
+<b> \__init__ </b>
+
+- 参数:
+  - data (pd.DataFrame): 财务面板数据（multi-index dataframe)
+  - report_period_dict: 报告期字典
+  
+---
+
+<b> copy </b>
+
+复制当前的财务面板数据
+
+- 参数: 无
+- FinanceReportPanelData
+
+---
+
+<b> query </b>
+- 查询规则: 
+    - 返回按照财报期对齐的数据
+    - 给定查询时间点，返回该时间之前
+- args: 
+    - time: *datetime* 
+    - 1 of：
+        - periods   : *int* 返回N条数据
+        - start_time: *detetime* 返回某时刻**对应的报告期**及其之后的数据
+        - window    : *timedelta* 返回一段时间的数据
+        - shift     : *int* 返回前数第N条数据 
+---
+---
+
+#### FinanceReportSectionData
+- 财报截面数据，通过Dataset构造
+- 指定data_model为'finance-report'，lag参数格式为'nQ'或'nY'的格式。例如当lag为'8Q'时，表示取当前最新可用的财务数据，并取过去连续8个季度的财务数据；当lag为'8Y'时，表示取当前最新可用的财务数据，并取过去8年同一季度的财务数据
+- 继承自NdarrayData，**NdarrayData支持的属性方法，它都支持**。同时也支持创建数据视图。
+
+<b> \__init__ </b>
+
+- 参数:
+  - data (numpy.ndarray): 财务截面数据
+  - describe: : 数据集的描述信息（长度为3）
+    - 时间戳 (Iterable[datetime])
+    - 字段列表 (Iterable[str] 或 str)
+    - 代码列表 (Iterable[str] 或 str)
+  
 ---
 ---
 
