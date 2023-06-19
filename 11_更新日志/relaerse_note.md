@@ -18,3 +18,8 @@
 
 ---
 
+- 1.0.2
+  - 数据模型功能优化：支持 DataView3d 以索引的形式获取 DataView2d。
+  - Api微调：SignalStrategy.factor_data 由原有的 DataView3d 改为 Dict[str, DataView2d] 
+
+  
