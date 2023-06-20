@@ -93,9 +93,9 @@ SignalStrategy 也是 [Generator](3_接口说明/策略/generator.md) 的子类�
 
 <b> 在 init 函数中调用，注册因子表 </b>
 
-注册后系统会生成一个基于 clock 时间的 [3D数据视图](3_接口说明/数据模型/set_model_view#DataView3d),
+注册后系统会生成一个字典用于存储因子数据 (self.facor_data)
 
-上述视图的描述为：[clock_timesteps, factor_names, codes],
+key 为因子名称，value 为一个基于 clock 时间的 [2D数据视图](3_接口说明/数据模型/set_model_view#DataView2d), 每个数据视图的列名为 codes。
 
 用户可在 on_clock 函数中通过 self.factor_data 获得数据视图，并通过 update_factor 更新数据。
 
