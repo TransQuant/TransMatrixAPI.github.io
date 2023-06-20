@@ -21,5 +21,14 @@
 - 1.0.2
   - 数据模型功能优化：支持 DataView3d 以索引的形式获取 DataView2d。
   - Api微调：SignalStrategy.factor_data 由原有的 DataView3d 改为 Dict[str, DataView2d] 
+    - 受影响的测例 (模板已更新)
+      - 因子服务-因子分析，
+      - 因子服务-评价模板，
+      - 策略服务-回测场景支持-因子选股，
+      - transmatrix 特色功能-中间变量，
+      - transmatrix 特色功能-批量任务，
+      - transmatrix 特色功能-数据获取，
+
+---
 
   
