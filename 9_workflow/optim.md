@@ -2,48 +2,68 @@
 
 Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因子提供一个样例。
 
-#### 待优化参数类型
+#### 待优化参数（超参数）类型
 
-参数类型可接受Sequence，Box，Discrete，Category和Bool。
+超参数类型可接受Sequence，Box，Discrete，Category和Bool。
 
-- Sequence：数值型的等差数列，输入[low, high, step]，参数的样本空间为np.arange(low, high, step)。比如输入[1,5,1]，得到np.arange(low,high,step)。
-- Box：数值型的连续空间，输入[low, high]，参数的样本空间为一个连续区间[low, high]。比如输入[1,5]，得到连续区间[1,5]。
-- Discrete：数值型的离散空间，比如输入[1,3,4]，参数的样本空间为一个list [1,3,4]。
-- Category：分类变量，比如输入['a','b','c']，参数的样本空间为一个list ['a','b','c']。
-- Bool：布尔值空间，输入[True, False]，参数的样本空间为一个list [True, False]。
+- Sequence：数值型的等差数列，输入[low, high, step]，超参数的样本空间为np.arange(low, high, step)。比如输入[1,5,1]，得到np.arange(low,high,step)。
+- Box：数值型的连续空间，输入[low, high]，超参数的样本空间为一个连续区间[low, high]。比如输入[1,5]，得到连续区间[1,5]。
+- Discrete：数值型的离散空间，比如输入[1,3,4]，超参数的样本空间为一个list [1,3,4]。
+- Category：分类变量，比如输入['a','b','c']，超参数的样本空间为一个list ['a','b','c']。
+- Bool：布尔值空间，输入[True, False]，超参数的样本空间为一个list [True, False]。
 
-#### 优化方法
+#### 优化算法
 
 - 网格搜索 **gridsearch**：支持除Box外的所有参数类型
-- 随机搜索 **randomsearch**：支持所有参数类型
-  - seed：随机种子
-  - max_iter：最大迭代数目
-- 贝叶斯搜索 **bayessearch**：仅支持数值型参数
-  - seed：随机种子
-  - max_iter：最大迭代数目
-  - n_warmup：初始化高斯过程模型的随机点个数
-  - ac_func：选择下一个采样点的采样策略，可选择EI, PI
-- 强化随机搜索 **ARS**：仅支持Sequence和Box类型的参数
-  - seed：随机种子
-  - max_iter：最大迭代数目
-  - lr：学习率
-  - initial_values：参数初值，字典类型。若为空，则随机生成一个点作为初值
-  - noise：指定对待优化参数每次探索长度的标准差，形如[待优化参数1的探索长度的标准差, 待优化参数2的探索长度的标准差, ...]的list
-  - num_directions：在每个迭代中探索多少个随机方向 
-  - num_top_directions：在每个迭代中保留多少个最好的随机方向
-  
-- 遗传算法 **GA**：支持所有参数类型
-  - seed：随机种子
-  - max_iter：最大迭代数目
-  - population_size：种群大小
-  - tournament_size：每次迭代中选取多少个最优个体不经过交叉、变异，直接复制进入下一代
-  - pc：交叉概率
-  - pm：变异概率
 
-- 早停法 earlystopping
-  - 在训练过程中监控模型的性能，一旦发现模型性能不再提升，就停止训练。
-  - patience：不再提升的容忍次数
-  - delta：提升的最小变化量
+  - 简介：通过在指定的超参数空间中搜索所有可能的参数组合，来寻找最优的超参数组合。
+- 随机搜索 **randomsearch**：支持所有参数类型
+
+  - 简介：在指定的超参数空间中随机选择参数组合进行评估。
+  - 算法参数：
+    - seed：随机种子
+    - max_iter：最大迭代数目
+- 贝叶斯搜索 **bayessearch**：仅支持数值型参数
+
+  - 简介：基于贝叶斯优化，建立一个代表超参数和评估目标之间关系的高斯过程模型，利用之前的结果来指导下一次搜索，从而更快地找到最优参数组合。
+  - 算法参数：
+    - seed：随机种子
+    - max_iter：最大迭代数目
+    - n_warmup：初始化高斯过程模型的随机点个数
+    - ac_func：选择下一个采样点的采样策略，可选择EI, PI
+- 强化随机搜索 **ARS**：仅支持Sequence和Box类型的参数
+
+  - 简介：基于随机搜索的增强学习算法，核心思想是使用随机噪声来超参数空间，并使用近似梯度来获得下一个参数组合，原文[Mania, Horia, Aurelia Guy, and Benjamin Recht. &quot;Simple random search provides a competitive approach to reinforcement learning.&quot; arXiv preprint arXiv:1803.07055 (2018)](https://arxiv.org/pdf/1803.07055.pdf)。
+  - 算法参数：
+  
+    - seed：随机种子
+    - max_iter：最大迭代数目
+    - lr：学习率
+    - initial_values：参数初值，字典类型。若为空，则随机生成一个点作为初值
+    - noise：指定对待优化参数每次探索长度的标准差，形如[待优化参数1的探索长度的标准差, 待优化参数2的探索长度的标准差, ...]的list
+    - num_directions：在每个迭代中探索多少个随机方向 
+    - num_top_directions：在每个迭代中保留多少个最好的随机方向
+- 遗传算法 **GA**：支持所有参数类型
+
+  - 简介：每个参数组合都被视为一个个体，整个超参数空间被视为一个种群，通过模拟遗传过程（选择、交叉和变异）来搜索最优参数组合。
+  - 算法参数：
+    - seed：随机种子
+    - max_iter：最大迭代数目
+    - population_size：种群大小
+    - tournament_size：每次迭代中选取多少个最优个体不经过交叉、变异，直接复制进入下一代
+    - pc：交叉概率
+    - pm：变异概率
+
+
+> 其他：
+>
+> 早停法 earlystopping
+>
+> - 简介：在训练过程中监控模型的性能，一旦发现模型性能不再提升，就停止训练。
+> - 算法参数：
+>   - patience：不再提升的容忍次数
+>   - delta：提升的最小变化量
+
 
 
 #### 结合参数优化的因子研究
