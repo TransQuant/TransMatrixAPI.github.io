@@ -6,11 +6,11 @@ Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因
 
 超参数类型可接受Sequence，Box，Discrete，Category和Bool。
 
-- Sequence：数值型的等差数列，输入[low, high, step]，超参数的样本空间为np.arange(low, high, step)。比如输入[1,5,1]，得到np.arange(low,high,step)。
-- Box：数值型的连续空间，输入[low, high]，超参数的样本空间为一个连续区间[low, high]。比如输入[1,5]，得到连续区间[1,5]。
-- Discrete：数值型的离散空间，比如输入[1,3,4]，超参数的样本空间为一个list [1,3,4]。
-- Category：分类变量，比如输入['a','b','c']，超参数的样本空间为一个list ['a','b','c']。
-- Bool：布尔值空间，输入[True, False]，超参数的样本空间为一个list [True, False]。
+- **Sequence**：数值型的等差数列，输入[low, high, step]，超参数的样本空间为np.arange(low, high, step)。比如输入[1,5,1]，得到np.arange(low,high,step)。
+- **Box**：数值型的连续空间，输入[low, high]，超参数的样本空间为一个连续区间[low, high]。比如输入[1,5]，得到连续区间[1,5]。
+- **Discrete**：数值型的离散空间，比如输入[1,3,4]，超参数的样本空间为一个list [1,3,4]。
+- **Category**：分类变量，比如输入['a','b','c']，超参数的样本空间为一个list ['a','b','c']。
+- **Bool**：布尔值空间，输入[True, False]，超参数的样本空间为一个list [True, False]。
 
 #### 优化算法
 
@@ -76,13 +76,13 @@ Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因
     OptimMatrix:
         max_workers: 20    # 并行运算的worker数量
         policy: gridsearch    # 参数优化方法，可选择gridsearch, randomsearch, bayessearch, GA, ARS
-        # 参数优化的相关参数设置
+        # 参数优化的算法参数设置
         policy_params: 
-        	# 公共参数
+        	# 不同优化算法都有的公共参数
             seed: 81    # 随机种子
             max_iter: 30    # 最大迭代数目
     		
-    		# 以下为不同优化方法特有的参数    
+    		# 以下为不同优化算法特有的参数    
             ## bayessearch
             n_warmup: 20    # 初始化高斯过程模型的随机点个数
             ac_func: 'EI'    # 选择下一个采样点的采样策略，可选择EI, PI
@@ -104,7 +104,7 @@ Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因
             patience: 3    # 不再提升的容忍次数
             delta: 0.0001    # 提升的最小变化量
     
-    	# 待优化参数，以[样本空间, 空间类型]的形式配置:
+    	# 待优化的超参数，以[样本空间, 空间类型]的形式配置:
         params:
             ret:  [[1,5,1], 'Sequence']
             roll: [[5,15,1], 'Sequence']
