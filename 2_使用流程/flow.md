@@ -113,7 +113,7 @@ class MyStrategy(Strategy):
 ```
 
 ### 构建评价器: Evaluator
- 
+
 <b> 1. 订阅评价数据 </b>
 
 ```python
@@ -136,7 +136,7 @@ class MyEvaluator(Evaluator):
 		...
 ```
 <b> 3. 编写可视化逻辑 </b>
-   
+
 ```python
 class MyEvaluator(Evaluator):
 	  def show(self):
@@ -188,5 +188,4 @@ matrix.init() # 初始化回测引擎
 matrix.run()  # 运行回测
 matrix.eval() # 运行评价
 ```
-
 
