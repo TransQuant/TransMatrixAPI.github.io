@@ -38,7 +38,6 @@ TransMatrix 中的一个研究工程类似于一个代码工程目录。
       - `strategy_path` # 评价器代码文件的相对路径 (以.py/.pyc 结尾)
       - `strategy_cls_name` # 评价器类名称 （策略类名称）
   
-    `# 通过 args / kwargs `[配置参数](3_接口说明/策略/generator.md#\__init__)
     - args:	# 通过 args [配置参数](3_接口说明/策略/generator.md#\__init__)
       - ... (列表参数)
     - kwargs:	# 或者通过 kwargs [配置参数](3_接口说明/策略/generator.md#\__init__)

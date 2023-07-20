@@ -14,25 +14,21 @@ Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因
 
 #### 优化算法
 
-- 网格搜索 **gridsearch**：支持除Box外的所有参数类型
-
-  - 简介：通过在指定的超参数空间中搜索所有可能的参数组合，来寻找最优的超参数组合。
-- 随机搜索 **randomsearch**：支持所有参数类型
-
+- **网格搜索** **gridsearch**：支持除Box外的所有参数类型
+- 简介：通过在指定的超参数空间中搜索所有可能的参数组合，来寻找最优的超参数组合。
+- **随机搜索** **randomsearch**：支持所有参数类型
   - 简介：在指定的超参数空间中随机选择参数组合进行评估。
   - 算法参数：
     - seed：随机种子
     - max_iter：最大迭代数目
-- 贝叶斯搜索 **bayessearch**：仅支持数值型参数
-
+- **贝叶斯搜索** **bayessearch**：仅支持数值型参数
   - 简介：基于贝叶斯优化，建立一个代表超参数和评估目标之间关系的高斯过程模型，利用之前的结果来指导下一次搜索，从而更快地找到最优参数组合。
   - 算法参数：
     - seed：随机种子
     - max_iter：最大迭代数目
     - n_warmup：初始化高斯过程模型的随机点个数
     - ac_func：选择下一个采样点的采样策略，可选择EI, PI
-- 强化随机搜索 **ARS**：仅支持Sequence和Box类型的参数
-
+- **强化随机搜索** **ARS**：仅支持Sequence和Box类型的参数
   - 简介：基于随机搜索的增强学习算法，核心思想是使用随机噪声来超参数空间，并使用近似梯度来获得下一个参数组合，原文[Mania, Horia, Aurelia Guy, and Benjamin Recht. &quot;Simple random search provides a competitive approach to reinforcement learning.&quot; arXiv preprint arXiv:1803.07055 (2018)](https://arxiv.org/pdf/1803.07055.pdf)。
   - 算法参数：
   
@@ -43,8 +39,7 @@ Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因
     - noise：指定对待优化参数每次探索长度的标准差，形如[待优化参数1的探索长度的标准差, 待优化参数2的探索长度的标准差, ...]的list
     - num_directions：在每个迭代中探索多少个随机方向 
     - num_top_directions：在每个迭代中保留多少个最好的随机方向
-- 遗传算法 **GA**：支持所有参数类型
-
+- **遗传算法** **GA**：支持所有参数类型
   - 简介：每个参数组合都被视为一个个体，整个超参数空间被视为一个种群，通过模拟遗传过程（选择、交叉和变异）来搜索最优参数组合。
   - 算法参数：
     - seed：随机种子
@@ -55,9 +50,9 @@ Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因
     - pm：变异概率
 
 
-> 其他：
+> Tips：
 >
-> 早停法 earlystopping
+> 为了使得优化算法的使用更灵活，本模块还支持**早停法 earlystopping**：
 >
 > - 简介：在训练过程中监控模型的性能，一旦发现模型性能不再提升，就停止训练。
 > - 算法参数：
@@ -146,7 +141,8 @@ Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因
           self.add_clock(milestones='09:35:00') 
   
       def pre_transform(self):
-          # 获得待优化参数ret和roll。注意：在参数优化过程中整数的数据类型会被转为浮点数，使用int()获得正确的数据类型。
+          # 通过self.param获得待优化参数ret和roll。self.param是一个Dict(param_name, param_value)。
+          # 注意：数值型的param_value在参数优化中都会被转为浮点数，使用int()获得正确的数据类型。
           param = self.param
           ret_window = int(param['ret'])
           roll_window = int(param['roll'])
@@ -213,3 +209,4 @@ Transmatrix框架支持参数优化功能，这里给出相关介绍，并对因
   </div>
   <div align=center style="font-size:12px">优化结果</div>
 
+​	
