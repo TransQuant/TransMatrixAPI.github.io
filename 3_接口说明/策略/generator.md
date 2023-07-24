@@ -1,11 +1,12 @@
-## Generator
+# Generator
 
 Generator 是 TransMatrix 系统的主要开发接口。
 
-它是 [Strategy](3_接口说明/策略/strategy.md) 的基类，同时也可被用户直接继承，用来实现因子计算逻辑。 
+它是 [Strategy](3_接口说明/策略/strategy.md) 和[SignalStrategy](5_定制化模块_截面因子开发/signal.md)的基类，也可被用户直接继承，用来实现因子计算或交易逻辑。 
 
----
-#### 属性列表
+
+
+## 属性列表
 
 | 名称                | 类型                        | 说明                                                         |
 | ------------------- | -------------------------- | ------------------------------------------------------------ |
@@ -15,23 +16,25 @@ Generator 是 TransMatrix 系统的主要开发接口。
 | subscribe_data_info | Dict[str, List]            | 数据订阅信息                                                       |
 | sub_generators      | Dict[str, 其他strategy]     | 因子订阅信息                                                       |
 | key                 | str                        | 实例 id
-___
 
 
+
+## 方法
 #### \__init__
 
 <b> 子类的参数注册接口 </b>
 
-TransMatrix 系统根据类名和参数确定 Generator 子类实例的key，
-系统通过key来保证Generator对象的全局唯一性。 若一个Generator实例在[注册](#subscribe)时系统中已存在与之相等（key相同）的对象，则该实例的订阅者将获得系统中已注册的实例（而非订阅者构造的实例本身）。
+TransMatrix 系统根据类名和其参数确定 Generator 子类实例的key，系统通过key来保证Generator对象的全局唯一性。 
+
+若一个Generator实例在[注册](#subscribe)时系统中已存在与之相等（key相同）的对象，则该实例的订阅者将获得系统中已注册的实例（而非订阅者构造的实例本身）。
 
 ```python
-# in main.py:
 class MyGenerator(Generator):
 
     def __init__(self, w, b):
         super().__init__(w, b)
 
+# a, b, c等价且相同
 a = MyGenerator(3, 2)
 b = MyGenerator(w = 3, b = 2)
 c = MyGenerator(3, b = 2)
@@ -42,7 +45,7 @@ assert a.b == b.b == c.b == 2
 
 args = [3,4]
 kwargs = {'w':3, 'b':4}
-
+# d, e等价且相同
 d = MyGenerator(*args)
 e = MyGenerator(**kargs)
 
@@ -52,7 +55,8 @@ assert d.w == e.w == 3 and d.b == e.b == 4
 
 ```
 
-___
+
+
 #### init
 
 <b> 初始化接口 </b>
@@ -71,7 +75,8 @@ class MyGenerator(Generator):
         self.add_message(...)
 ```
 
-___
+
+
 #### subscribe_data
 
 <b> 数据订阅接口 </b>
@@ -87,7 +92,7 @@ ___
   - lag: 
     - 若为量价数据，则传入整数，含义为缓冲期长度（天）。系统会将回测开始时间前推
     - 若为财报数据，则传入'3Q','1Y' ... 等，系统将按报告期生成滞后字段
-        
+    
   - category: 
     - 若为A股财报数据，则填入'finance-report' (describe 长度为 6)
     - 若为其他数据，则不提供该字段 (describe 长度为 5)
@@ -111,7 +116,8 @@ class MyGenerator(Generator):
         volume = self.pv.get('000001.SZ','volume')
         print(self.time, f'当前 000001.SZ 的 volume 为 {volume}')
 ```
----
+
+
 
 #### subscribe
 
@@ -132,7 +138,8 @@ class MyGeneratorA(Generator):
         b = MyGeneratorB()
         self.b = self.subscribe(b)
 ```
----
+
+
 
 #### add_scheduler
 
@@ -145,7 +152,7 @@ class MyGeneratorA(Generator):
 - with_data (str, optional): 数据订阅对应的属性名(按某一[订阅数据]()触发回调). Defaults to None.
 - handler (Callable): 回调函数。
 
-注意：scheduler，milestones，freq，with_data 有且只有一个有效。
+> 注意：scheduler，milestones，freq，with_data 有且只有一个有效。
 
 <b> 返回值 </b>：registed_scheduler (scheduler) 注册后的 scheduler 实例。
 
@@ -162,8 +169,16 @@ class MyGenerator(Generator):
     def my_callback(self):
         print(self.time)
 ```
----
-#### Generator 间的信息传递
+
+
+
+## Generator 间的信息传递
+
+Generator 之间的信息传递给 Transmatrix 投研框架创造了高度的灵活性和自定义能力。
+
+在 Generator 中，一条信息可以指代任何的 python 对象，它可以是一段话、一个数据，甚至一个类对象。这使得因子计算和交易策略之间的交互变得灵活而高效。
+
+### 相关方法
 
 <b> add_message </b> 
 
@@ -204,7 +219,75 @@ class MyGeneratorB(Generator):
 
     def my_callback(self, msg):
         print(f'接收到来自 a 的波动率信息: vol = {msg}')
+        
 ```
----
 
+
+
+### 一个交易策略示例
+
+使用 f1_gen 创造一个非定频发生的交易逻辑：当全市场交易量大于10000时，买入交易量最大的股票，否则不执行任何交易。
+
+```python
+# strategy.py
+class f1_gen(Generator):
+    def init(self):
+        self.subscribe_data(
+            'pv', ['common2','stock_bar_1day', self.codes,'volume', 1]
+        )
+        # 添加回测发生时间：随着数据pv的时间戳发生
+        self.add_scheduler(with_data='pv', handler=self.compute_f1)
+        # 添加消息流的名称
+        self.add_message('f1_value')
+        
+    def compute_f1(self):
+        volume = self.pv.get('volume')
+        # 传出消息：当全市场交易量大于10000时，传出volume数据
+        if np.nansum(volume) >= 10000:
+        	self.public('f1_value', volume)
+        
+
+class trade(SimulationStrategy):
+    def init(self):
+        self.subscribe_data(
+            'pv', ['common2','stock_bar_1day',self.codes,'close', 0]
+        )
+        # 订阅f1_gen
+        f1 = self.subscribe(f1_gen())
+        # 在接收f1_gen的消息f1_value时，执行self.on_f1
+        self.callback(f1['f1_value'], self.on_f1)
+        
+    def on_f1(self, f1_value):
+   		# 买入交易量最大的股票
+       	f1_value = np.where(np.isnan(f1_value), -np.inf, f1_value)
+        buy_code = self.codes[np.argmax(f1_value)]
+        price = self.pv.get('close', buy_code)
+        self.buy(
+            price, 
+            volume=100, 
+            offset='open', 
+            code=buy_code, 
+            market='stock'
+        )
+```
+
+```yaml
+# config.yaml
+matrix:
+
+    mode: simulation
+    span: [2022-01-04, 2022-01-10]
+    codes: custom_universe.pkl
+    market:
+        stock:
+            data: [meta_data, stock_bar_1day] # 挂载的行情数据
+            matcher: daily # 订单撮合模式为daily
+            account: detail # 账户类型为detail
+
+strategy:
+    trade:
+        class:
+            - strategy.py
+            - trade
+```
 
