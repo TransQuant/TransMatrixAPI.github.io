@@ -258,7 +258,7 @@ class trade(SimulationStrategy):
         self.callback(f1['f1_value'], self.on_f1)
         
     def on_f1(self, f1_value):
-   		# 买入交易量最大的股票
+		# 买入交易量最大的股票
        	f1_value = np.where(np.isnan(f1_value), -np.inf, f1_value)
         buy_code = self.codes[np.argmax(f1_value)]
         price = self.pv.get('close', buy_code)
